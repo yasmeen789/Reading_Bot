@@ -76,27 +76,27 @@ function handleSessionEndRequest(callback) {
   callback({}, buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
 }
 
-function createFavoriteColorAttributes(favoriteColor) {
+function create_childs_name_attributes(childs_name) {
   return {
-    favoriteColor,
+    childs_name,
   };
 }
 
 /**
  * Sets the color in the session and prepares the speech to reply to the user.
  */
-function setColorInSession(intent, session, callback) {
+function set_childs_details_in_session(intent, session, callback) {
   const cardTitle = intent.name;
-  const favoriteColorSlot = intent.slots.Color;
+  const childs_nameSlot = intent.slots.Child;
   let repromptText = '';
   let sessionAttributes = {};
   const shouldEndSession = false;
   let speechOutput = '';
 
-  if (favoriteColorSlot) {
-    const favoriteColor = favoriteColorSlot.value;
-    sessionAttributes = createFavoriteColorAttributes(favoriteColor);
-    speechOutput = `I now know your favorite color is ${favoriteColor}. You can ask me ` +
+  if (childs_nameSlot) {
+    const childs_name = childs_nameSlot.value;
+    sessionAttributes = create_childs_name_attributes(childs_name);
+    speechOutput = `I now know your favorite color is ${childs_name}. You can ask me ` +
       "your favorite color by saying, what's my favorite color?";
     repromptText = "You can ask me your favorite color by saying, what's my favorite color?";
   } else {
@@ -109,19 +109,19 @@ function setColorInSession(intent, session, callback) {
     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
 }
 
-function getColorFromSession(intent, session, callback) {
-  let favoriteColor;
+function set_confirm_details_from_session(intent, session, callback) {
+  let childs_name;
   const repromptText = null;
   const sessionAttributes = {};
   let shouldEndSession = false;
   let speechOutput = '';
 
   if (session.attributes) {
-    favoriteColor = session.attributes.favoriteColor;
+    childs_name = session.attributes.childs_name;
   }
 
-  if (favoriteColor) {
-    speechOutput = `Your favorite color is ${favoriteColor}. Goodbye.`;
+  if (childs_name) {
+    speechOutput = `Your favorite color is ${childs_name}. Goodbye.`;
     shouldEndSession = true;
   } else {
     speechOutput = "I'm not sure what your favorite color is, you can say, my favorite color " +
@@ -165,10 +165,10 @@ function onIntent(intentRequest, session, callback) {
   const intentName = intentRequest.intent.name;
 
   // Dispatch to your skill's intent handlers
-  if (intentName === 'MyColorIsIntent') {
-    setColorInSession(intent, session, callback);
-  } else if (intentName === 'WhatsMyColorIntent') {
-    getColorFromSession(intent, session, callback);
+  if (intentName === 'MyChildsNameIsIntent') {
+    set_childs_details_in_session(intent, session, callback);
+  } else if (intentName === 'ConfirmChildsNameIntent') {
+    set_confirm_details_from_session(intent, session, callback);
   } else if (intentName === 'AMAZON.HelpIntent') {
     getWelcomeResponse(callback);
   } else if (intentName === 'AMAZON.StopIntent' || intentName === 'AMAZON.CancelIntent') {
