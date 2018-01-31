@@ -13,7 +13,46 @@
       "intent": "WhatsMyColorIntent"
     },
     {
+      "slots": [
+        {
+          "name": "Child",
+          "type": "LIST_OF_CHILD_NAMES"
+        },
+        {
+          "name": "Date",
+          "type": "LIST_OF_DATES"
+        },
+        {
+          "name": "Month",
+          "type": "LIST_OF_MONTHS"
+        },
+        {
+          "name": "Year",
+          "type": "LIST_OF_YEARS"
+        }
+      ],
+      "intent": "MyChildsNameIsIntent"
+    },
+    {
+      "slots": [
+        {
+          "name": "ConfirmDetails",
+          "type": "CHILD_NAME_CORRECT"
+        }
+      ],
+      "intent": "ConfirmChildsNameIntent"
+    },
+    {
       "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "Play"
+    },
+    {
+      "intent": "AMAZON.NextIntent"
+    },
+    {
+      "intent": "StartReadingBook"
     },
     {
       "intent": "AMAZON.PauseIntent"
