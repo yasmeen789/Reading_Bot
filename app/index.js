@@ -150,7 +150,28 @@ function set_childs_details_in_session(intent, session, callback) {
     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
 }
 
+function create_confirm_details_attributes(confirm_details) {
+  return {
+    confirm_details,
+  };
+}
+// ######################### here
 function set_confirm_details_from_session(intent, session, callback) {
+  const cardTitle = intent.name;
+  const childs_confirmDetailsSlot = intent.slots.ConfirmDetails;
+  let repromptText = '';
+  let sessionAttributes = {};
+  const shouldEndSession = false;
+  let speechOutput = '';
+
+  speechOutput = `Setup complete. To begin reading 'The Gruffalo'` +
+    `by Julia Donaldson, say start.`;
+
+  callback(sessionAttributes,
+    buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+}
+
+function set_confirmlllllll_details_from_session(intent, session, callback) {
   let childs_name;
   const repromptText = null;
   const sessionAttributes = {};
