@@ -167,12 +167,25 @@ function set_confirm_details_from_session(intent, session, callback) {
   if (childs_confirmDetailsSlot) {
     const confirm_details = childs_confirmDetailsSlot.value;
     sessionAttributes = create_confirm_details_attributes(confirm_details);
-    speechOutput = `Setup complete. To begin reading 'The Gruffalo'` +
-      `by Julia Donaldson, say start.`;
+    if (confirm_details == 'true') {
+      speechOutput = `Setup complete. You said ${confirm_details} To begin reading 'The Gruffalo'` +
+        `by Julia Donaldson, say start.`;
+    } else if (confirm_details == 'false') {
+      speechOutput = "Please tell me the name and date of birth of the child " +
+        " that will be using this application." +
+        " For example, my child's name is " +
+        "Scarlet and her date of birth is the 21st September 2003.";
+    } else {
+      speechOutput = `Setup not complete.`;
+    }
   } else {
-    speechOutput = `Setup not complete.`;
+    speechOutput = "I'm not sure what your child's name is. Please try again.";
+    repromptText = "I'm not sure what your child's name is. " +
+      "Please tell me the name and date of birth of the child " +
+      " that will be using this application." +
+      " For example, my child's name is " +
+      "Scarlet and her date of birth is the 21st September 2003.";
   }
-
 
   callback(sessionAttributes,
     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
