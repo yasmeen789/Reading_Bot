@@ -82,12 +82,33 @@ function create_childs_name_attributes(childs_name) {
   };
 }
 
+function create_date_of_birth(date_of_birth) {
+  return {
+    date_of_birth,
+  };
+}
+
+function create_month_of_birth(month_of_birth) {
+  return {
+    month_of_birth,
+  };
+}
+
+function create_year_of_birth(year_of_birth) {
+  return {
+    year_of_birth,
+  };
+}
+
 /**
  * Sets the color in the session and prepares the speech to reply to the user.
  */
 function set_childs_details_in_session(intent, session, callback) {
   const cardTitle = intent.name;
   const childs_nameSlot = intent.slots.Child;
+  const childs_dateSlot = intent.slots.Date;
+  const childs_monthSlot = intent.slots.Month;
+  const childs_yearSlot = intent.slots.Year;
   let repromptText = '';
   let sessionAttributes = {};
   const shouldEndSession = false;
@@ -96,13 +117,33 @@ function set_childs_details_in_session(intent, session, callback) {
   if (childs_nameSlot) {
     const childs_name = childs_nameSlot.value;
     sessionAttributes = create_childs_name_attributes(childs_name);
-    speechOutput = `I now know your favorite color is ${childs_name}. You can ask me ` +
-      "your favorite color by saying, what's my favorite color?";
-    repromptText = "You can ask me your favorite color by saying, what's my favorite color?";
+    if (childs_nameSlot) {
+      const date_of_birth = childs_dateSlot.value;
+      sessionAttributes = create_date_of_birth(date_of_birth);
+      if (childs_nameSlot) {
+        const month_of_birth = childs_monthSlot.value;
+        sessionAttributes = create_month_of_birth(month_of_birth);
+        if (childs_nameSlot) {
+          const year_of_birth = childs_yearSlot.value;
+          sessionAttributes = create_year_of_birth(year_of_birth);
+          speechOutput = `Your childs name is ${childs_name}` +
+            `, and their date of birth is the ${date_of_birth}` +
+            ` of ${month_of_birth} ${year_of_birth}. ` +
+            ` Is this true or false?`;
+          repromptText = `Your childs name is ${childs_name}` +
+            `, and their date of birth is the ${date_of_birth}` +
+            ` of ${month_of_birth} ${year_of_birth}. ` +
+            ` Is this true or false?`;
+        }
+      }
+    }
   } else {
-    speechOutput = "I'm not sure what your favorite color is. Please try again.";
-    repromptText = "I'm not sure what your favorite color is. You can tell me your " +
-      'favorite color by saying, my favorite color is red';
+    speechOutput = "I'm not sure what your child's name is. Please try again.";
+    repromptText = "I'm not sure what your child's name is. " +
+      "Please tell me the name and date of birth of the child " +
+      " that will be using this application." +
+      " For example, my child's name is " +
+      "Scarlet and her date of birth is the 21st September 2003.";
   }
 
   callback(sessionAttributes,
