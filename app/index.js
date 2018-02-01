@@ -168,7 +168,7 @@ function set_confirm_details_from_session(intent, session, callback) {
     const confirm_details = childs_confirmDetailsSlot.value;
     sessionAttributes = create_confirm_details_attributes(confirm_details);
     if (confirm_details == 'true') {
-      speechOutput = `Setup complete. You said ${confirm_details} To begin reading 'The Gruffalo'` +
+      speechOutput = `Setup complete. To begin reading 'The Gruffalo'` +
         `by Julia Donaldson, say start.`;
     } else if (confirm_details == 'false') {
       speechOutput = "Please tell me the name and date of birth of the child " +
@@ -186,6 +186,20 @@ function set_confirm_details_from_session(intent, session, callback) {
       " For example, my child's name is " +
       "Scarlet and her date of birth is the 21st September 2003.";
   }
+
+  callback(sessionAttributes,
+    buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+}
+
+function get_request_start_reading(intent, session, callback) {
+  const cardTitle = intent.name;
+  let repromptText = '';
+  let sessionAttributes = {};
+  const shouldEndSession = true;
+  let speechOutput = '';
+
+  speechOutput = `You have requested to start reading the Gruffalo. `;
+
 
   callback(sessionAttributes,
     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
@@ -273,6 +287,16 @@ function onIntent(intentRequest, session, callback) {
     set_childs_details_in_session(intent, session, callback);
   } else if (intentName === 'ConfirmChildsNameIntent') {
     set_confirm_details_from_session(intent, session, callback);
+  } else if (intentName === 'StartIntent') {
+    start_instructions(intent, session, callback);
+  } else if (intentName === 'AMAZON.NextIntent') {
+    get_next(intent, session, callback);
+  } else if (intentName === 'AMAZON.PauseIntent') {
+    set_pause(intent, session, callback);
+  } else if (intentName === 'AMAZON.ResumeIntent') {
+    get_repeat(intent, session, callback);
+  } else if (intentName === 'StartReadingBook') {
+    get_request_start_reading(intent, session, callback);
   } else if (intentName === 'AMAZON.HelpIntent') {
     getWelcomeResponse(callback);
   } else if (intentName === 'AMAZON.StopIntent' || intentName === 'AMAZON.CancelIntent') {
