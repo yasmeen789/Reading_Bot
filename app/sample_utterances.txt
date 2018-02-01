@@ -15,3 +15,10 @@ WhatsMyColorIntent yup
 WhatsMyColorIntent sure
 WhatsMyColorIntent yes please
 MyColorIsIntent my favorite color is {Color}
+MyChildsNameIsIntent my child's name is {Child} and their date of birth is the {Date} of {Month} {Year}
+MyChildsNameIsIntent {Child} and the {Date} {Month} {Year}
+MyChildsNameIsIntent {Child} {Date} {Month} {Year}
+ConfirmChildsNameIntent that is {ConfirmDetails}
+ConfirmChildsNameIntent {ConfirmDetails}
+StartReadingBook start
+StartReadingBook start reading
