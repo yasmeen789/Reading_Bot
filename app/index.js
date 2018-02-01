@@ -164,8 +164,15 @@ function set_confirm_details_from_session(intent, session, callback) {
   const shouldEndSession = false;
   let speechOutput = '';
 
-  speechOutput = `Setup complete. To begin reading 'The Gruffalo'` +
-    `by Julia Donaldson, say start.`;
+  if (childs_confirmDetailsSlot) {
+    const confirm_details = childs_confirmDetailsSlot.value;
+    sessionAttributes = create_confirm_details_attributes(confirm_details);
+    speechOutput = `Setup complete. To begin reading 'The Gruffalo'` +
+      `by Julia Donaldson, say start.`;
+  } else {
+    speechOutput = `Setup not complete.`;
+  }
+
 
   callback(sessionAttributes,
     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
@@ -183,7 +190,11 @@ function set_confirmlllllll_details_from_session(intent, session, callback) {
   }
 
   if (childs_name) {
-    speechOutput = `Your favorite color is ${childs_name}. Goodbye.`;
+    speechOutput = `
+    Your favorite color is $ {
+      childs_name
+    }.Goodbye.
+    `;
     shouldEndSession = true;
   } else {
     speechOutput = "I'm not sure what your favorite color is, you can say, my favorite color " +
@@ -204,14 +215,26 @@ function set_confirmlllllll_details_from_session(intent, session, callback) {
  * Called when the session starts.
  */
 function onSessionStarted(sessionStartedRequest, session) {
-  console.log(`onSessionStarted requestId=${sessionStartedRequest.requestId}, sessionId=${session.sessionId}`);
+  console.log(`
+    onSessionStarted requestId = $ {
+      sessionStartedRequest.requestId
+    }, sessionId = $ {
+      session.sessionId
+    }
+    `);
 }
 
 /**
  * Called when the user launches the skill without specifying what they want.
  */
 function onLaunch(launchRequest, session, callback) {
-  console.log(`onLaunch requestId=${launchRequest.requestId}, sessionId=${session.sessionId}`);
+  console.log(`
+    onLaunch requestId = $ {
+      launchRequest.requestId
+    }, sessionId = $ {
+      session.sessionId
+    }
+    `);
 
   // Dispatch to your skill's launch.
   getWelcomeResponse(callback);
@@ -221,7 +244,13 @@ function onLaunch(launchRequest, session, callback) {
  * Called when the user specifies an intent for this skill.
  */
 function onIntent(intentRequest, session, callback) {
-  console.log(`onIntent requestId=${intentRequest.requestId}, sessionId=${session.sessionId}`);
+  console.log(`
+    onIntent requestId = $ {
+      intentRequest.requestId
+    }, sessionId = $ {
+      session.sessionId
+    }
+    `);
 
   const intent = intentRequest.intent;
   const intentName = intentRequest.intent.name;
@@ -245,7 +274,13 @@ function onIntent(intentRequest, session, callback) {
  * Is not called when the skill returns shouldEndSession=true.
  */
 function onSessionEnded(sessionEndedRequest, session) {
-  console.log(`onSessionEnded requestId=${sessionEndedRequest.requestId}, sessionId=${session.sessionId}`);
+  console.log(`
+    onSessionEnded requestId = $ {
+      sessionEndedRequest.requestId
+    }, sessionId = $ {
+      session.sessionId
+    }
+    `);
   // Add cleanup logic here
 }
 
@@ -256,7 +291,11 @@ function onSessionEnded(sessionEndedRequest, session) {
 // etc.) The JSON body of the request is provided in the event parameter.
 exports.handler = (event, context, callback) => {
   try {
-    console.log(`event.session.application.applicationId=${event.session.application.applicationId}`);
+    console.log(`
+    event.session.application.applicationId = $ {
+      event.session.application.applicationId
+    }
+    `);
 
     /**
      * Uncomment this if statement and populate with your skill's application ID to
