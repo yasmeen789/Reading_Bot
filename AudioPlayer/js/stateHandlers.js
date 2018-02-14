@@ -22,8 +22,8 @@ var stateHandlers = {
       //  Change state to START_MODE
       this.handler.state = constants.states.START_MODE;
 
-      var message = 'Welcome to the AWS Podcast. You can say, play the audio to begin the podcast.';
-      var reprompt = 'You can say, play the audio, to begin.';
+      var message = 'Welcome to your Reading Bot. You can say, play The Grufflo, to begin your story.';
+      var reprompt = 'You can say, play The Grufflo, to begin.';
 
       this.response.speak(message).listen(reprompt);
       this.emit(':responseReady');

@@ -60,9 +60,6 @@ var audioEventHandlers = Alexa.CreateStateHandler(constants.states.PLAY_MODE, {
     if (enqueueIndex === audioData.length) {
       if (this.attributes['loop']) {
         // Enqueueing the first item since looping is enabled.
-        // var message = 'Eight';
-        // this.response.speak(message);
-        // this.emit(':responseReady');
         enqueueIndex = 0;
       } else {
         // Nothing to enqueue since reached end of the list and looping is disabled.
@@ -80,9 +77,6 @@ var audioEventHandlers = Alexa.CreateStateHandler(constants.states.PLAY_MODE, {
 
     this.response.audioPlayerPlay(playBehavior, podcast.url, enqueueToken, expectedPreviousToken, offsetInMilliseconds);
     this.emit(':responseReady');
-    // var message = 'Eight';
-    // this.response.speak(message);
-    // this.emit(':responseReady');
   },
   'PlaybackFailed': function() {
     //  AudioPlayer.PlaybackNearlyFinished Directive received. Logging the error.
