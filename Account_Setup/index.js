@@ -48,12 +48,11 @@ function getWelcomeResponse(callback) {
   // If we wanted to initialize the session to have some attributes we could add those here.
   const sessionAttributes = {};
   const cardTitle = 'Welcome';
-  const speechOutput = 'Name and date of birth';
-  // "Welcome to your child companion setup. "\
-  // "Please tell me the name and date of birth of the child "\
-  // " that will be using this application."\
-  // " For example, my child's name is "\
-  // "Scarlet and her date of birth is the 21st September 2003."
+  const speechOutput = "Welcome to the Reading Bot setup. " +
+    "Please tell me the name and date of birth of the child " +
+    " that will be using this application." +
+    " For example, my child's name is " +
+    "Scarlet and her date of birth is the 21st September 2003.";
 
   // If the user either does not reply to the welcome message or says something that is not
   // understood, they will be prompted again with this text.
