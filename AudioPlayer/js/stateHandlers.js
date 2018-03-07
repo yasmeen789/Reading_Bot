@@ -45,7 +45,7 @@ var stateHandlers = {
       controller.play.call(this);
     },
     'AMAZON.HelpIntent': function() {
-      var message = 'Welcome to the AWS Podcast. You can say, play the audio, to begin the podcast.';
+      var message = 'Welcome to your Reading Bot. You can say, play The Grufflo, to begin your story.';
       this.response.speak(message).listen(message);
       this.emit(':responseReady');
     },
@@ -86,7 +86,7 @@ var stateHandlers = {
       var reprompt;
       if (this.attributes['playbackFinished']) {
         this.handler.state = constants.states.START_MODE;
-        message = 'Welcome to the AWS Podcast. You can say, play the audio to begin the podcast.';
+        message = 'Welcome to your Reading Bot. You can say, play The Grufflo, to begin your story.';
         reprompt = 'You can say, play the audio, to begin.';
       } else {
         this.handler.state = constants.states.RESUME_DECISION_MODE;
@@ -99,7 +99,7 @@ var stateHandlers = {
       this.emit(':responseReady');
     },
     'PlayAudio': function() {
-      controller.play.call(this)
+      controller.play.call(this);
     },
     'AMAZON.NextIntent': function() {
       controller.playNext.call(this)
@@ -136,8 +136,8 @@ var stateHandlers = {
     },
     'AMAZON.HelpIntent': function() {
       // This will called while audio is playing and a user says "ask <invocation_name> for help"
-      var message = 'You are listening to the AWS Podcast. You can say, Next or Previous to navigate through the playlist. ' +
-        'At any time, you can say Pause to pause the audio and Resume to resume.';
+      var message = 'You are listening to the Reading Bot. You can say, Next or Previous to navigate through the story. ' +
+        'At any time, you can say Pause to pause the story and Resume to resume.';
       this.response.speak(message).listen(message);
       this.emit(':responseReady');
     },
@@ -145,7 +145,7 @@ var stateHandlers = {
       // No session ended logic
     },
     'Unhandled': function() {
-      var message = 'Sorry, I could not understand. You can say, Next or Previous to navigate through the playlist.';
+      var message = 'Sorry, I could not understand. You can say, Next or Previous to navigate through the story.';
       this.response.speak(message).listen(message);
       this.emit(':responseReady');
     }
@@ -234,8 +234,11 @@ var controller = function() {
       }
 
       var token = String(this.attributes['playOrder'][this.attributes['index']]);
+      // this.attributes['playOrder'] = 0,1
+      // this.attributes['index'] = 0
       var playBehavior = 'REPLACE_ALL';
       var podcast = audioData[this.attributes['playOrder'][this.attributes['index']]];
+      // podast = object object
       var offsetInMilliseconds = this.attributes['offsetInMilliseconds'];
       // Since play behavior is REPLACE_ALL, enqueuedToken attribute need to be set to null.
       this.attributes['enqueuedToken'] = null;
@@ -247,9 +250,32 @@ var controller = function() {
       }
 
       var message = "This is The Gruffalo by Julia Donaldson.";
+      // var message = 'Play order is: ' + this.attributes['playOrder'] + '. Index is: ' + this.attributes['index'] + '. Podcast is: ' + podcast;
       // "This is " + audioData[this.attributes['index']].title;
       this.response.speak(message).audioPlayerPlay(playBehavior, podcast.url, token, null, offsetInMilliseconds);
       this.emit(':responseReady');
+
+      // #### THIS IS WHERE I AM NOW EDITING THE SECOND AUDIO CLIP IN
+      // audioData = require('./audioAssets');
+      // var token = String(this.attributes['playOrder'][this.attributes['index']]);
+      // // this.attributes['playOrder'] = 0,1
+      // // this.attributes['index'] = 0
+      // var playBehavior = 'REPLACE_ALL';
+      // var podcast = audioData[this.attributes['playOrder'][this.attributes['index']]];
+      // // podast = object object
+      // var offsetInMilliseconds = this.attributes['offsetInMilliseconds'];
+      // // Since play behavior is REPLACE_ALL, enqueuedToken attribute need to be set to null.
+      // this.attributes['enqueuedToken'] = null;
+      //
+      // if (canThrowCard.call(this)) {
+      //   var cardTitle = 'Playing ' + podcast.title;
+      //   var cardContent = 'Playing ' + podcast.title;
+      //   this.response.cardRenderer(cardTitle, cardContent, null);
+      // }
+
+      // var message = "This is The Gruffalo by Julia Donaldson.";
+      // this.response.speak(message).audioPlayerPlay(playBehavior, podcast.url, token, null, offsetInMilliseconds);
+      // this.emit(':responseReady');
     },
     stop: function() {
       /*
@@ -275,7 +301,8 @@ var controller = function() {
           // Reached at the end. Thus reset state to start mode and stop playing.
           this.handler.state = constants.states.START_MODE;
 
-          var message = 'You have reached at the end of the playlist.';
+          // var message = 'You have reached the end of part 1.';
+          var message = 'The number of items in this list is: ' + audioData.length;
           this.response.speak(message).audioPlayerStop();
           return this.emit(':responseReady');
         }
@@ -306,6 +333,9 @@ var controller = function() {
           var message = 'You have reached at the start of the playlist.';
           this.response.speak(message).audioPlayerStop();
           return this.emit(':responseReady');
+          // #### From here is where I have started editing.
+          // // I am trying to get the audioclips to play from separate files.
+          // audioData = require('./part1');
         }
       }
       // Set values to attributes.

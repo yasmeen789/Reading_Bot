@@ -75,6 +75,7 @@ var audioEventHandlers = Alexa.CreateStateHandler(constants.states.PLAY_MODE, {
     var expectedPreviousToken = this.attributes['token'];
     var offsetInMilliseconds = 0;
 
+    // var message = 'Hi, this is an interruption.';
     this.response.audioPlayerPlay(playBehavior, podcast.url, enqueueToken, expectedPreviousToken, offsetInMilliseconds);
     this.emit(':responseReady');
   },
