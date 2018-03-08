@@ -147,14 +147,52 @@ function set_story_choice_in_session(intent, session, callback) {
   const story_choiceSlot = intent.slots.StoryChoice;
   let repromptText = '';
   let sessionAttributes = {};
-  const shouldEndSession = true;
+  const shouldEndSession = false;
   let speechOutput = '';
 
   if (story_choiceSlot) {
     const story_choice = story_choiceSlot.value;
     sessionAttributes = create_story_choice(story_choice);
-    speechOutput = `You have chosen ${story_choice}. `;
-    repromptText = `You have chosen ${story_choice}. `;
+    speechOutput = `You have chosen ${story_choice}. ` + audio1 + question1;
+    repromptText = question1;
+  } else {
+    speechOutput = "I'm not sure what your child's name is. Please try again.";
+    repromptText = "I'm not sure what your child's name is. " +
+      "Please tell me the name and date of birth of the child " +
+      " that will be using this application." +
+      " For example, my child's name is " +
+      "Scarlet and her date of birth is the 21st September 2003.";
+  }
+
+  callback(sessionAttributes,
+    buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+}
+
+function create_answer_acceptance(correct_answer) {
+  return {
+    correct_answer,
+  };
+}
+
+/**
+ * Sets the color in the session and prepares the speech to reply to the user.
+ */
+function set_answer_from_session(intent, session, callback) {
+  const cardTitle = intent.name;
+  const correct_AnswerSlot = intent.slots.CorrectAnswer;
+  let repromptText = '';
+  let sessionAttributes = {};
+  const shouldEndSession = true;
+  let speechOutput = '';
+
+  if (correct_AnswerSlot) {
+    const correct_answer = correct_AnswerSlot.value;
+    sessionAttributes = create_answer_acceptance(correct_answer);
+    if (correct_answer == 'fox') {
+      speechOutput = correctAnswer1 + audio2;
+    } else {
+      speechOutput = correctAnswer2 + audio2;
+    }
   } else {
     speechOutput = "I'm not sure what your child's name is. Please try again.";
     repromptText = "I'm not sure what your child's name is. " +
