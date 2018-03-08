@@ -4,6 +4,9 @@
       "intent": "WhatsMyFourDigitTokenIntent"
     },
     {
+      "intent": "AvailableBooksIntent"
+    },
+    {
       "slots": [
         {
           "name": "Color",

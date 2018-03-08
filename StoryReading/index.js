@@ -123,6 +123,25 @@ function create_story_choice(story_choice) {
 /**
  * Sets the color in the session and prepares the speech to reply to the user.
  */
+
+function getAvailableBooks(intent, session, callback) {
+  let availableBooks;
+  const repromptText = null;
+  const sessionAttributes = {};
+  let shouldEndSession = false;
+  let speechOutput = '';
+
+  speechOutput = `Your available books are The Gruffalo, Cinderella ` +
+    `and The Three Little Pigs. ` +
+    `Which book would you like to begin reading? `;
+
+  // Setting repromptText to null signifies that we do not want to reprompt the user.
+  // If the user does not respond or says something that is not understood, the session
+  // will end.
+  callback(sessionAttributes,
+    buildSpeechletResponse(intent.name, speechOutput, repromptText, shouldEndSession));
+}
+
 function set_story_choice_in_session(intent, session, callback) {
   const cardTitle = intent.name;
   const story_choiceSlot = intent.slots.StoryChoice;
@@ -202,6 +221,8 @@ function onIntent(intentRequest, session, callback) {
     set_story_choice_in_session(intent, session, callback);
   } else if (intentName === 'StartIntent') {
     start_instructions(intent, session, callback);
+  } else if (intentName === 'AvailableBooksIntent') {
+    getAvailableBooks(intent, session, callback);
   } else if (intentName === 'AMAZON.NextIntent') {
     get_next(intent, session, callback);
   } else if (intentName === 'AMAZON.PauseIntent') {

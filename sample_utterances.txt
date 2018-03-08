@@ -33,3 +33,4 @@ WhatsMyFourDigitTokenIntent four digit token
 StoryChoiceIntent {StoryChoice}
 StoryChoiceIntent I want to read {StoryChoice}
 StoryChoiceIntent {StoryChoice} please
+AvailableBooksIntent what's in my library
