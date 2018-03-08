@@ -84,8 +84,7 @@ function create_childs_name_attributes(childs_name) {
 /**
  * Sets the color in the session and prepares the speech to reply to the user.
  */
-
-function set_childs_name_in_session(intent, session, callback) {
+function set_childs_details_in_session(intent, session, callback) {
   const cardTitle = intent.name;
   const childs_nameSlot = intent.slots.Child;
   let repromptText = '';
@@ -97,45 +96,8 @@ function set_childs_name_in_session(intent, session, callback) {
     const childs_name = childs_nameSlot.value;
     sessionAttributes = create_childs_name_attributes(childs_name);
 
-    speechOutput = `Hi ${childs_name}! ` +
-      "What's the name of the book you would like to read today? " +
-      "If you would like to hear a list of your available books say, " +
-      "What's in my library? ";
-    repromptText = "What's the name of the book you would like to read today? " +
-      "If you would like to hear a list of your available books say, " +
-      "What's in my library? ";
-
-  } else {
-    speechOutput = "I'm not sure what your name is. Please try again.";
-    repromptText = "I'm not sure what your name is. ";
-  }
-
-  callback(sessionAttributes,
-    buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
-}
-
-function create_story_choice(story_choice) {
-  return {
-    story_choice,
-  };
-}
-
-/**
- * Sets the color in the session and prepares the speech to reply to the user.
- */
-function set_story_choice_in_session(intent, session, callback) {
-  const cardTitle = intent.name;
-  const story_choiceSlot = intent.slots.StoryChoice;
-  let repromptText = '';
-  let sessionAttributes = {};
-  const shouldEndSession = true;
-  let speechOutput = '';
-
-  if (story_choiceSlot) {
-    const story_choice = story_choiceSlot.value;
-    sessionAttributes = create_story_choice(story_choice);
-    speechOutput = `You have chosen ${story_choice}. `;
-    repromptText = `You have chosen ${story_choice}. `;
+    speechOutput = `Hi, ${childs_name}`.
+    // repromptText = `Your childs name is ${childs_name}. `;
   } else {
     speechOutput = "I'm not sure what your child's name is. Please try again.";
     repromptText = "I'm not sure what your child's name is. " +
@@ -148,6 +110,171 @@ function set_story_choice_in_session(intent, session, callback) {
   callback(sessionAttributes,
     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
 }
+
+function create_confirm_details_attributes(confirm_details) {
+  return {
+    confirm_details,
+  };
+}
+// ######################### here
+function set_confirm_details_from_session(intent, session, callback) {
+  const cardTitle = intent.name;
+  const childs_confirmDetailsSlot = intent.slots.ConfirmDetails;
+  let repromptText = '';
+  let sessionAttributes = {};
+  const shouldEndSession = false;
+  let speechOutput = '';
+
+  if (childs_confirmDetailsSlot) {
+    const confirm_details = childs_confirmDetailsSlot.value;
+    sessionAttributes = create_confirm_details_attributes(confirm_details);
+    if (confirm_details == 'true') {
+      speechOutput = `Setup complete. To begin reading 'The Gruffalo' ` +
+        `by Julia Donaldson, say start.`;
+    } else if (confirm_details == 'false') {
+      speechOutput = "Please tell me the name and date of birth of the child " +
+        " that will be using this application." +
+        " For example, my child's name is " +
+        "Scarlet and her date of birth is the 21st September 2003.";
+    } else {
+      speechOutput = `Setup not complete.`;
+    }
+  } else {
+    speechOutput = "I'm not sure what your child's name is. Please try again.";
+    repromptText = "I'm not sure what your child's name is. " +
+      "Please tell me the name and date of birth of the child " +
+      " that will be using this application." +
+      " For example, my child's name is " +
+      "Scarlet and her date of birth is the 21st September 2003.";
+  }
+
+  callback(sessionAttributes,
+    buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+}
+
+function startStory(intent, session, callback) {
+  const cardTitle = intent.name;
+  let repromptText = '';
+  let sessionAttributes = {};
+  const shouldEndSession = false;
+  let speechOutput = '';
+
+  speechOutput = audio1 + question1;
+
+  callback(sessionAttributes,
+    buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+}
+
+// function create_answer_acceptance(answer) {
+//   return {
+//     answer,
+//   };
+// }
+// // ######################### here
+// function set_answer_from_session(intent, session, callback) {
+//   const cardTitle = intent.name;
+//   const anwer_slot = intent.slots.CorrectAnswer;
+//   let repromptText = '';
+//   let sessionAttributes = {};
+//   const shouldEndSession = false;
+//   let speechOutput = '';
+//
+//   if (answer_slot) {
+//     const answer = answer_slot.value;
+//     sessionAttributes = create_answer_acceptance(answer);
+//     // if (answer === 'fox') {
+//     speechOutput = 'Yes, well done.';
+//     // } else {
+//     // speechOutput = wrongAnswer1;
+//     // }
+//   }
+//
+//   callback(sessionAttributes,
+//     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+// }
+
+function create_answer_acceptance(correct_answer) {
+  return {
+    correct_answer,
+  };
+}
+
+/**
+ * Sets the color in the session and prepares the speech to reply to the user.
+ */
+function set_answer_from_session(intent, session, callback) {
+  const cardTitle = intent.name;
+  const correct_AnswerSlot = intent.slots.CorrectAnswer;
+  let repromptText = '';
+  let sessionAttributes = {};
+  const shouldEndSession = true;
+  let speechOutput = '';
+
+  if (correct_AnswerSlot) {
+    const correct_answer = correct_AnswerSlot.value;
+    sessionAttributes = create_answer_acceptance(correct_answer);
+    if (correct_answer == 'fox') {
+      speechOutput = correctAnswer1 + audio2;
+    } else {
+      speechOutput = correctAnswer2 + audio2;
+    }
+  } else {
+    speechOutput = "I'm not sure what your child's name is. Please try again.";
+    repromptText = "I'm not sure what your child's name is. " +
+      "Please tell me the name and date of birth of the child " +
+      " that will be using this application." +
+      " For example, my child's name is " +
+      "Scarlet and her date of birth is the 21st September 2003.";
+  }
+
+  callback(sessionAttributes,
+    buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+}
+
+// function get_request_start_reading(intent, session, callback) {
+//   const cardTitle = intent.name;
+//   let repromptText = '';
+//   let sessionAttributes = {};
+//   const shouldEndSession = true;
+//   let speechOutput = '';
+//
+//   speechOutput = `You have reached the end of the story.`;
+//
+//
+//   callback(sessionAttributes,
+//     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+// }
+
+function set_confirmlllllll_details_from_session(intent, session, callback) {
+  let childs_name;
+  const repromptText = null;
+  const sessionAttributes = {};
+  let shouldEndSession = false;
+  let speechOutput = '';
+
+  if (session.attributes) {
+    childs_name = session.attributes.childs_name;
+  }
+
+  if (childs_name) {
+    speechOutput = `
+    Your favorite color is $ {
+      childs_name
+    }.Goodbye.
+    `;
+    shouldEndSession = true;
+  } else {
+    speechOutput = "I'm not sure what your favorite color is, you can say, my favorite color " +
+      ' is red';
+  }
+
+  // Setting repromptText to null signifies that we do not want to reprompt the user.
+  // If the user does not respond or says something that is not understood, the session
+  // will end.
+  callback(sessionAttributes,
+    buildSpeechletResponse(intent.name, speechOutput, repromptText, shouldEndSession));
+}
+
 
 // --------------- Events -----------------------
 
@@ -197,9 +324,9 @@ function onIntent(intentRequest, session, callback) {
 
   // Dispatch to your skill's intent handlers
   if (intentName === 'MyChildsNameIsIntent') {
-    set_childs_name_in_session(intent, session, callback);
-  } else if (intentName === 'StoryChoiceIntent') {
-    set_story_choice_in_session(intent, session, callback);
+    set_childs_details_in_session(intent, session, callback);
+  } else if (intentName === 'ConfirmChildsNameIntent') {
+    set_confirm_details_from_session(intent, session, callback);
   } else if (intentName === 'StartIntent') {
     start_instructions(intent, session, callback);
   } else if (intentName === 'AMAZON.NextIntent') {

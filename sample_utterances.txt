@@ -15,9 +15,8 @@ WhatsMyColorIntent yes
 WhatsMyColorIntent yup
 WhatsMyColorIntent sure
 WhatsMyColorIntent yes please
-MyChildsNameIsIntent my child's name is {Child} and their date of birth is the {Date} of {Month} {Year}
-MyChildsNameIsIntent {Child} and the {Date} {Month} {Year}
-MyChildsNameIsIntent {Child} {Date} {Month} {Year}
+MyChildsNameIsIntent my child's name is {Child}
+MyChildsNameIsIntent {Child}
 ConfirmChildsNameIntent that is {ConfirmDetails}
 ConfirmChildsNameIntent {ConfirmDetails}
 StartReadingBook start
@@ -29,3 +28,8 @@ CorrectAnswerIntent {CorrectAnswer}
 CorrectAnswerIntent it is a {CorrectAnswer}
 CorrectAnswerIntent {CorrectAnswer} begins with f
 CorrectAnswerIntent f is for {CorrectAnswer}
+WhatsMyFourDigitTokenIntent what's my four digit token
+WhatsMyFourDigitTokenIntent four digit token
+StoryChoiceIntent {StoryChoice}
+StoryChoiceIntent I want to read {StoryChoice}
+StoryChoiceIntent {StoryChoice} please
