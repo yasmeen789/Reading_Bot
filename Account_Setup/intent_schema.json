@@ -1,13 +1,13 @@
 {
   "intents": [
     {
-      "intent": "MyColorIsIntent",
       "slots": [
         {
           "name": "Color",
           "type": "LIST_OF_COLORS"
         }
-      ]
+      ],
+      "intent": "MyColorIsIntent"
     },
     {
       "intent": "WhatsMyColorIntent"
@@ -53,6 +53,18 @@
     },
     {
       "intent": "StartReadingBook"
+    },
+    {
+      "slots": [
+        {
+          "name": "CorrectAnswer",
+          "type": "LIST_OF_CORRECT_ANSWERS"
+        }
+      ],
+      "intent": "CorrectAnswerIntent"
+    },
+    {
+      "intent": "FinishBook"
     },
     {
       "intent": "AMAZON.PauseIntent"

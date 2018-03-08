@@ -8,7 +8,12 @@
  * For additional samples, visit the Alexa Skills Kit Getting Started guide at
  * http://amzn.to/1LGWsLG
  */
+const audio1 = 'A mouse took a stroll through the deep dark wood. A fox saw the mouse, and the mouse looked good. ';
+const audio2 = 'Where are you going to, little brown mouse? Come and have lunch in my underground house. ';
 
+const question1 = 'What animal\'s name begins with the letter F? ';
+const correctAnswer1 = 'That\'s right! Fox begins with an F. F-O-X, fox! ';
+const wrongAnswer1 = 'Almost. Fox begins with an F! F-O-X, fox! ';
 
 // --------------- Helpers that build all of the responses -----------------------
 
@@ -48,11 +53,12 @@ function getWelcomeResponse(callback) {
   // If we wanted to initialize the session to have some attributes we could add those here.
   const sessionAttributes = {};
   const cardTitle = 'Welcome';
-  const speechOutput = "Welcome to the Reading Bot setup. " +
-    "Please tell me the name and date of birth of the child " +
-    " that will be using this application." +
-    " For example, my child's name is " +
-    "Scarlet and her date of birth is the 21st September 2003.";
+  const speechOutput = "Name and date of birth";
+  // "Welcome to the Reading Bot setup. " +
+  //   "Please tell me the name and date of birth of the child " +
+  //   " that will be using this application." +
+  //   " For example, my child's name is " +
+  //   "Scarlet and her date of birth is the 21st September 2003.";
 
   // If the user either does not reply to the welcome message or says something that is not
   // understood, they will be prompted again with this text.
@@ -167,7 +173,7 @@ function set_confirm_details_from_session(intent, session, callback) {
     const confirm_details = childs_confirmDetailsSlot.value;
     sessionAttributes = create_confirm_details_attributes(confirm_details);
     if (confirm_details == 'true') {
-      speechOutput = `Setup complete. To begin reading 'The Gruffalo'` +
+      speechOutput = `Setup complete. To begin reading 'The Gruffalo' ` +
         `by Julia Donaldson, say start.`;
     } else if (confirm_details == 'false') {
       speechOutput = "Please tell me the name and date of birth of the child " +
@@ -190,19 +196,98 @@ function set_confirm_details_from_session(intent, session, callback) {
     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
 }
 
-function get_request_start_reading(intent, session, callback) {
+function startStory(intent, session, callback) {
   const cardTitle = intent.name;
+  let repromptText = '';
+  let sessionAttributes = {};
+  const shouldEndSession = false;
+  let speechOutput = '';
+
+  speechOutput = audio1 + question1;
+
+  callback(sessionAttributes,
+    buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+}
+
+// function create_answer_acceptance(answer) {
+//   return {
+//     answer,
+//   };
+// }
+// // ######################### here
+// function set_answer_from_session(intent, session, callback) {
+//   const cardTitle = intent.name;
+//   const anwer_slot = intent.slots.CorrectAnswer;
+//   let repromptText = '';
+//   let sessionAttributes = {};
+//   const shouldEndSession = false;
+//   let speechOutput = '';
+//
+//   if (answer_slot) {
+//     const answer = answer_slot.value;
+//     sessionAttributes = create_answer_acceptance(answer);
+//     // if (answer === 'fox') {
+//     speechOutput = 'Yes, well done.';
+//     // } else {
+//     // speechOutput = wrongAnswer1;
+//     // }
+//   }
+//
+//   callback(sessionAttributes,
+//     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+// }
+
+function create_answer_acceptance(correct_answer) {
+  return {
+    correct_answer,
+  };
+}
+
+/**
+ * Sets the color in the session and prepares the speech to reply to the user.
+ */
+function set_answer_from_session(intent, session, callback) {
+  const cardTitle = intent.name;
+  const correct_AnswerSlot = intent.slots.CorrectAnswer;
   let repromptText = '';
   let sessionAttributes = {};
   const shouldEndSession = true;
   let speechOutput = '';
 
-  speechOutput = `You have requested to start reading the Gruffalo. `;
-
+  if (correct_AnswerSlot) {
+    const correct_answer = correct_AnswerSlot.value;
+    sessionAttributes = create_answer_acceptance(correct_answer);
+    if (correct_answer == 'fox') {
+      speechOutput = correctAnswer1 + audio2;
+    } else {
+      speechOutput = correctAnswer2 + audio2;
+    }
+  } else {
+    speechOutput = "I'm not sure what your child's name is. Please try again.";
+    repromptText = "I'm not sure what your child's name is. " +
+      "Please tell me the name and date of birth of the child " +
+      " that will be using this application." +
+      " For example, my child's name is " +
+      "Scarlet and her date of birth is the 21st September 2003.";
+  }
 
   callback(sessionAttributes,
     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
 }
+
+// function get_request_start_reading(intent, session, callback) {
+//   const cardTitle = intent.name;
+//   let repromptText = '';
+//   let sessionAttributes = {};
+//   const shouldEndSession = true;
+//   let speechOutput = '';
+//
+//   speechOutput = `You have reached the end of the story.`;
+//
+//
+//   callback(sessionAttributes,
+//     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+// }
 
 function set_confirmlllllll_details_from_session(intent, session, callback) {
   let childs_name;
@@ -295,6 +380,10 @@ function onIntent(intentRequest, session, callback) {
   } else if (intentName === 'AMAZON.ResumeIntent') {
     get_repeat(intent, session, callback);
   } else if (intentName === 'StartReadingBook') {
+    startStory(intent, session, callback);
+  } else if (intentName === 'CorrectAnswerIntent') {
+    set_answer_from_session(intent, session, callback);
+  } else if (intentName === 'FinishBook') {
     get_request_start_reading(intent, session, callback);
   } else if (intentName === 'AMAZON.HelpIntent') {
     getWelcomeResponse(callback);

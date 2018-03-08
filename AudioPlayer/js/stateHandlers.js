@@ -275,7 +275,7 @@ var controller = function() {
           // Reached at the end. Thus reset state to start mode and stop playing.
           this.handler.state = constants.states.START_MODE;
 
-          var message = 'You have reached at the end of the playlist.';
+          var message = 'You have reached the end of the playlist.';
           this.response.speak(message).audioPlayerStop();
           return this.emit(':responseReady');
         }
