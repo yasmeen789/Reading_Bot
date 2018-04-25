@@ -54,10 +54,8 @@ function getWelcomeResponse(callback) {
 
   // If the user either does not reply to the welcome message or says something that is not
   // understood, they will be prompted again with this text.
-  const repromptText = "Welcome to the Reading Bot. " +
-    "To setup your account and begin using this application, please visit " +
-    "www.ReadingBot.co.uk, and enter your 4 digit token. " +
-    "To hear your 4 digit token, you can ask: What\'s my 4 digit token? ";
+  const repromptText = "To hear your 4 digit token, you can ask: What\'s my " +
+    "4 digit token? ";
   const shouldEndSession = false;
 
   callback(sessionAttributes,
