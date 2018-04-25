@@ -53,13 +53,13 @@ function getWelcomeResponse(callback) {
   // If we wanted to initialize the session to have some attributes we could add those here.
   const sessionAttributes = {};
   const cardTitle = 'Welcome';
-  const speechOutput = "Welcome to the Reading Bot. " +
-    "Which child am I reading with today?";
+  const speechOutput = "Hi, I'm Reading Bot. " +
+    "What's your first name?";
 
   // If the user either does not reply to the welcome message or says something that is not
   // understood, they will be prompted again with this text.
-  const repromptText = "Welcome to the Reading Bot. " +
-    "Which child am I reading with today?";
+  const repromptText = "Hi, I'm Reading Bot. " +
+    "What's your first name?";
   const shouldEndSession = false;
 
   callback(sessionAttributes,
@@ -96,15 +96,19 @@ function set_childs_name_in_session(intent, session, callback) {
   if (childs_nameSlot) {
     const childs_name = childs_nameSlot.value;
     sessionAttributes = create_childs_name_attributes(childs_name);
-
-    speechOutput = `Hi ${childs_name}! ` +
-      "What's the name of the book you would like to read today? " +
-      "If you would like to hear a list of your available books say, " +
-      "What's in my library? ";
-    repromptText = "What's the name of the book you would like to read today? " +
-      "If you would like to hear a list of your available books say, " +
-      "What's in my library? ";
-
+    if (childs_name == `Toby`) {
+      speechOutput = `Hi ${childs_name}! ` +
+        "What's the name of the book you would like to read today? " +
+        "If you would like to hear a list of your available books say, " +
+        "What's in my library? ";
+      repromptText = "What's the name of the book you would like to read today? " +
+        "If you would like to hear a list of your available books say, " +
+        "What's in my library? ";
+    } else {
+      speechOutput = `You said, ${childs_name}. I don't think that's right.` +
+        " What's your first name? ";
+      repromptText = "What's your first name?";
+    }
   } else {
     speechOutput = "I'm not sure what your name is. Please try again.";
     repromptText = "I'm not sure what your name is. ";
