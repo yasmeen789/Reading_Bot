@@ -177,9 +177,9 @@ function setStoryChoiceInSession(intent, session, callback) {
 /**
  * Initiates the child's answer.
  */
-function createAnswerAcceptance(correct_answer) {
+function createAnswerAcceptance(child_answer) {
   return {
-    correct_answer,
+    child_answer,
   };
 }
 
@@ -188,19 +188,19 @@ function createAnswerAcceptance(correct_answer) {
  */
 function setAnswerFromSession(intent, session, callback) {
   const cardTitle = intent.name;
-  const correct_AnswerSlot = intent.slots.CorrectAnswer;
+  const child_answerSlot = intent.slots.CorrectAnswer;
   let repromptText = '';
   let sessionAttributes = {};
   const shouldEndSession = true;
   let speechOutput = '';
 
-  if (correct_AnswerSlot) {
-    const correct_answer = correct_AnswerSlot.value;
-    sessionAttributes = createAnswerAcceptance(correct_answer);
-    if (correct_answer == 'fox') {
+  if (child_answerSlot) {
+    const child_answer = child_answerSlot.value;
+    sessionAttributes = createAnswerAcceptance(child_answer);
+    if (child_answer == 'fox') {
       speechOutput = correctAnswer1 + audio2;
     } else {
-      speechOutput = correctAnswer2 + audio2;
+      speechOutput = wrongAnswer1 + audio2;
     }
   }
 
