@@ -112,9 +112,6 @@ function setChildsNameInSession(intent, session, callback) {
         " What's your first name? ";
       repromptText = "What's your first name?";
     }
-  } else {
-    speechOutput = "I'm not sure what your name is. Please try again.";
-    repromptText = "I'm not sure what your name is. ";
   }
 
   callback(sessionAttributes,
@@ -171,13 +168,6 @@ function setStoryChoiceInSession(intent, session, callback) {
     } else {
       speechOutput = `You said ${story_choice}. That's not an available book. `;
     }
-  } else {
-    speechOutput = "I'm not sure what your child's name is. Please try again.";
-    repromptText = "I'm not sure what your child's name is. " +
-      "Please tell me the name and date of birth of the child " +
-      " that will be using this application." +
-      " For example, my child's name is " +
-      "Scarlet and her date of birth is the 21st September 2003.";
   }
 
   callback(sessionAttributes,
@@ -212,13 +202,6 @@ function setAnswerFromSession(intent, session, callback) {
     } else {
       speechOutput = correctAnswer2 + audio2;
     }
-  } else {
-    speechOutput = "I'm not sure what your child's name is. Please try again.";
-    repromptText = "I'm not sure what your child's name is. " +
-      "Please tell me the name and date of birth of the child " +
-      " that will be using this application." +
-      " For example, my child's name is " +
-      "Scarlet and her date of birth is the 21st September 2003.";
   }
 
   callback(sessionAttributes,
