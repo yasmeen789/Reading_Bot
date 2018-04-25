@@ -135,7 +135,7 @@ function getAvailableBooks(intent, session, callback) {
   let shouldEndSession = false;
   let speechOutput = '';
 
-  speechOutput = `Your available books are The Gruffalo, Cinderella ` +
+  speechOutput = `Your available books are The Gruffalo, Jack and the Beanstalk ` +
     `and The Three Little Pigs. ` +
     `Which book would you like to begin reading? `;
 
@@ -157,8 +157,12 @@ function set_story_choice_in_session(intent, session, callback) {
   if (story_choiceSlot) {
     const story_choice = story_choiceSlot.value;
     sessionAttributes = create_story_choice(story_choice);
-    speechOutput = `You have chosen ${story_choice}. ` + audio1 + question1;
-    repromptText = question1;
+    if (story_choice == `the gruffalo`) {
+      speechOutput = `You have chosen ${story_choice}. Great choice!` + audio1 + question1;
+      repromptText = question1;
+    } else {
+      speechOutput = `You said ${story_choice}. That's not an available book. `;
+    }
   } else {
     speechOutput = "I'm not sure what your child's name is. Please try again.";
     repromptText = "I'm not sure what your child's name is. " +
