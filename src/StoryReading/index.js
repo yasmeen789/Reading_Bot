@@ -47,17 +47,16 @@ function buildResponse(sessionAttributes, speechletResponse) {
 }
 
 
-// --------------- Functions that control the skill's behavior -----------------------
+// --------------- Functions that control the skill's behavior -----------------
 
+/**
+ * Initial speech that welcomes the user.
+ */
 function getWelcomeResponse(callback) {
-  // If we wanted to initialize the session to have some attributes we could add those here.
   const sessionAttributes = {};
   const cardTitle = 'Welcome';
   const speechOutput = "Hi, I'm Reading Bot. " +
     "What's your first name?";
-
-  // If the user either does not reply to the welcome message or says something that is not
-  // understood, they will be prompted again with this text.
   const repromptText = "What's your first name?";
   const shouldEndSession = false;
 
@@ -65,26 +64,31 @@ function getWelcomeResponse(callback) {
     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
 }
 
+/**
+ * Ends the session.
+ */
 function handleSessionEndRequest(callback) {
   const cardTitle = 'Session Ended';
-  const speechOutput = "Thank you for using your child's companion. Have a nice day! ";
+  const speechOutput = "Thanks for reading with me! See you next time!";
   // Setting this to true ends the session and exits the skill.
   const shouldEndSession = true;
 
   callback({}, buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
 }
 
-function create_childs_name_attributes(childs_name) {
+/**
+ * Initiates the child's first name.
+ */
+function createChildsNameAttributes(childs_name) {
   return {
     childs_name,
   };
 }
 
 /**
- * Sets the color in the session and prepares the speech to reply to the user.
+ * Checks child's name and asks about books.
  */
-
-function set_childs_name_in_session(intent, session, callback) {
+function setChildsNameInSession(intent, session, callback) {
   const cardTitle = intent.name;
   const childs_nameSlot = intent.slots.Child;
   let repromptText = '';
@@ -94,7 +98,7 @@ function set_childs_name_in_session(intent, session, callback) {
 
   if (childs_nameSlot) {
     const childs_name = childs_nameSlot.value;
-    sessionAttributes = create_childs_name_attributes(childs_name);
+    sessionAttributes = createChildsNameAttributes(childs_name);
     if (childs_name == `Toby`) {
       speechOutput = `Hi ${childs_name}! ` +
         "What's the name of the book you would like to read today? " +
@@ -117,16 +121,18 @@ function set_childs_name_in_session(intent, session, callback) {
     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
 }
 
-function create_story_choice(story_choice) {
+/**
+ * Initiates the child's story choice.
+ */
+function createStoryChoice(story_choice) {
   return {
     story_choice,
   };
 }
 
 /**
- * Sets the color in the session and prepares the speech to reply to the user.
+ * Lists all available books.
  */
-
 function getAvailableBooks(intent, session, callback) {
   let availableBooks;
   const repromptText = null;
@@ -145,7 +151,10 @@ function getAvailableBooks(intent, session, callback) {
     buildSpeechletResponse(intent.name, speechOutput, repromptText, shouldEndSession));
 }
 
-function set_story_choice_in_session(intent, session, callback) {
+/**
+ * Starts reading story.
+ */
+function setStoryChoiceInSession(intent, session, callback) {
   const cardTitle = intent.name;
   const story_choiceSlot = intent.slots.StoryChoice;
   let repromptText = '';
@@ -155,7 +164,7 @@ function set_story_choice_in_session(intent, session, callback) {
 
   if (story_choiceSlot) {
     const story_choice = story_choiceSlot.value;
-    sessionAttributes = create_story_choice(story_choice);
+    sessionAttributes = createStoryChoice(story_choice);
     if (story_choice == `the gruffalo`) {
       speechOutput = `You have chosen ${story_choice}. Great choice!` + audio1 + question1;
       repromptText = question1;
@@ -175,16 +184,19 @@ function set_story_choice_in_session(intent, session, callback) {
     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
 }
 
-function create_answer_acceptance(correct_answer) {
+/**
+ * Initiates the child's answer.
+ */
+function createAnswerAcceptance(correct_answer) {
   return {
     correct_answer,
   };
 }
 
 /**
- * Sets the color in the session and prepares the speech to reply to the user.
+ * Responds to child's answer and continues story.
  */
-function set_answer_from_session(intent, session, callback) {
+function setAnswerFromSession(intent, session, callback) {
   const cardTitle = intent.name;
   const correct_AnswerSlot = intent.slots.CorrectAnswer;
   let repromptText = '';
@@ -194,7 +206,7 @@ function set_answer_from_session(intent, session, callback) {
 
   if (correct_AnswerSlot) {
     const correct_answer = correct_AnswerSlot.value;
-    sessionAttributes = create_answer_acceptance(correct_answer);
+    sessionAttributes = createAnswerAcceptance(correct_answer);
     if (correct_answer == 'fox') {
       speechOutput = correctAnswer1 + audio2;
     } else {
@@ -261,9 +273,9 @@ function onIntent(intentRequest, session, callback) {
 
   // Dispatch to your skill's intent handlers
   if (intentName === 'MyChildsNameIsIntent') {
-    set_childs_name_in_session(intent, session, callback);
+    setChildsNameInSession(intent, session, callback);
   } else if (intentName === 'StoryChoiceIntent') {
-    set_story_choice_in_session(intent, session, callback);
+    setStoryChoiceInSession(intent, session, callback);
   } else if (intentName === 'StartIntent') {
     start_instructions(intent, session, callback);
   } else if (intentName === 'AvailableBooksIntent') {
@@ -277,7 +289,7 @@ function onIntent(intentRequest, session, callback) {
   } else if (intentName === 'StartReadingBook') {
     startStory(intent, session, callback);
   } else if (intentName === 'CorrectAnswerIntent') {
-    set_answer_from_session(intent, session, callback);
+    setAnswerFromSession(intent, session, callback);
   } else if (intentName === 'FinishBook') {
     get_request_start_reading(intent, session, callback);
   } else if (intentName === 'AMAZON.HelpIntent') {

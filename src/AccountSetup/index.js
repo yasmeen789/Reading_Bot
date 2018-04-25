@@ -43,6 +43,9 @@ function buildResponse(sessionAttributes, speechletResponse) {
 
 // --------------- Functions that control the skill's behavior -----------------------
 
+/**
+ * Initial speech that welcomes the user.
+ */
 function getWelcomeResponse(callback) {
   // If we wanted to initialize the session to have some attributes we could add those here.
   const sessionAttributes = {};
@@ -62,15 +65,21 @@ function getWelcomeResponse(callback) {
     buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
 }
 
+/**
+ * Ends the session.
+ */
 function handleSessionEndRequest(callback) {
   const cardTitle = 'Session Ended';
-  const speechOutput = "Thank you for using the Reading Bot. Have a nice day! ";
+  const speechOutput = "Thanks for using the Reading Bot. Have a nice day! ";
   // Setting this to true ends the session and exits the skill.
   const shouldEndSession = true;
 
   callback({}, buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
 }
 
+/**
+ * Gives the user a four digit token.
+ */
 function getFourDigitTokenFromSession(intent, session, callback) {
   let fourDigitToken;
   const repromptText = null;
