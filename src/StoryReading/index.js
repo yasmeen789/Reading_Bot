@@ -259,22 +259,10 @@ function onIntent(intentRequest, session, callback) {
     setChildsNameInSession(intent, session, callback);
   } else if (intentName === 'StoryChoiceIntent') {
     setStoryChoiceInSession(intent, session, callback);
-  } else if (intentName === 'StartIntent') {
-    start_instructions(intent, session, callback);
   } else if (intentName === 'AvailableBooksIntent') {
     getAvailableBooks(intent, session, callback);
-  } else if (intentName === 'AMAZON.NextIntent') {
-    get_next(intent, session, callback);
-  } else if (intentName === 'AMAZON.PauseIntent') {
-    set_pause(intent, session, callback);
-  } else if (intentName === 'AMAZON.ResumeIntent') {
-    get_repeat(intent, session, callback);
-  } else if (intentName === 'StartReadingBook') {
-    startStory(intent, session, callback);
   } else if (intentName === 'CorrectAnswerIntent') {
     setAnswerFromSession(intent, session, callback);
-  } else if (intentName === 'FinishBook') {
-    get_request_start_reading(intent, session, callback);
   } else if (intentName === 'AMAZON.HelpIntent') {
     getWelcomeResponse(callback);
   } else if (intentName === 'AMAZON.StopIntent' || intentName === 'AMAZON.CancelIntent') {
