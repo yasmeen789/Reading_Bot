@@ -12,7 +12,7 @@ const audio1 = 'A mouse took a stroll through the deep dark wood. A fox saw the 
 const audio2 = 'Where are you going to, little brown mouse? Come and have lunch in my underground house. ';
 
 const question1 = 'What animal\'s name begins with the letter F? ';
-const correctAnswer1 = 'That\'s right! Fox begins with an F. F-O-X, fox! ';
+const ChildAnswer1 = 'That\'s right! Fox begins with an F. F-O-X, fox! ';
 const wrongAnswer1 = 'Almost. Fox begins with an F! F-O-X, fox! ';
 
 // --------------- Helpers that build all of the responses -----------------------
@@ -137,7 +137,7 @@ function getAvailableBooks(intent, session, callback) {
   let shouldEndSession = false;
   let speechOutput = '';
 
-  speechOutput = `Your available books are The Gruffalo, Jack and the Beanstalk ` +
+  speechOutput = `Your available books are The Gruffalo, Jack and the Beanstalk, ` +
     `and The Three Little Pigs. ` +
     `Which book would you like to begin reading? `;
 
@@ -188,7 +188,7 @@ function createAnswerAcceptance(child_answer) {
  */
 function setAnswerFromSession(intent, session, callback) {
   const cardTitle = intent.name;
-  const child_answerSlot = intent.slots.CorrectAnswer;
+  const child_answerSlot = intent.slots.ChildAnswer;
   let repromptText = '';
   let sessionAttributes = {};
   const shouldEndSession = true;
@@ -198,7 +198,7 @@ function setAnswerFromSession(intent, session, callback) {
     const child_answer = child_answerSlot.value;
     sessionAttributes = createAnswerAcceptance(child_answer);
     if (child_answer == 'fox') {
-      speechOutput = correctAnswer1 + audio2;
+      speechOutput = ChildAnswer1 + audio2;
     } else {
       speechOutput = wrongAnswer1 + audio2;
     }
@@ -261,7 +261,7 @@ function onIntent(intentRequest, session, callback) {
     setStoryChoiceInSession(intent, session, callback);
   } else if (intentName === 'AvailableBooksIntent') {
     getAvailableBooks(intent, session, callback);
-  } else if (intentName === 'CorrectAnswerIntent') {
+  } else if (intentName === 'ChildAnswerIntent') {
     setAnswerFromSession(intent, session, callback);
   } else if (intentName === 'AMAZON.HelpIntent') {
     getWelcomeResponse(callback);
